@@ -20,9 +20,11 @@ SocketDatagrama::SocketDatagrama(int p){
 
 int SocketDatagrama::recibe(PaqueteDatagrama & p){
 	int res;
-	char recv[16];
-	int r = recvfrom(s, (char *)&res, sizeof(int), 0, NULL, NULL);
-	p.inicializaDatos((char *)&res);
+	socklen_t clilen;
+	clilen = sizeof(direccionForanea);
+	char recv[20];
+	int r = recvfrom(s, (char *)&res, sizeof(int), 0, (struct sockaddr *)&direccionForanea, &clilen);
+	//p.inicializaDatos((char *)&res);
 	inet_ntop(AF_INET,&direccionForanea.sin_addr,recv,sizeof(recv));
 	cout <<"Recibo de " << recv << " Port: " <<ntohs(direccionForanea.sin_port) << endl;
 	return res;
